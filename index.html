@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>evopt — Tesla Fleet OAuth callback</title>
+    <style>
+      body { font-family: ui-monospace, monospace; background: #0f1115; color: #e6e8ec; margin: 0; padding: 40px; }
+      h1 { font-size: 18px; text-transform: uppercase; letter-spacing: 0.04em; }
+      .box { border: 1px solid #2a2f3a; padding: 16px; background: #171a21; margin-top: 16px; word-break: break-all; }
+      .muted { color: #9aa1ad; }
+      code { color: #3a7afe; }
+      button { background: #1f232c; color: #e6e8ec; border: 1px solid #2a2f3a; padding: 8px 12px; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <h1>evopt — Tesla Fleet callback</h1>
+    <p class="muted">Den här sidan tar emot Teslas OAuth-svar och visar koden att klistra in i evopt-daemonen.</p>
+    <div id="out" class="box"></div>
+    <script>
+      const p = new URLSearchParams(location.search);
+      const code = p.get('code');
+      const state = p.get('state');
+      const err = p.get('error');
+      const out = document.getElementById('out');
+      if (err) {
+        out.innerHTML = '<strong>Fel:</strong> ' + err + ' — ' + (p.get('error_description') || '');
+      } else if (code) {
+        out.innerHTML =
+          '<p>Auth code (klistra in i evopt):</p><p><code id="c">' + code + '</code></p>' +
+          '<p class="muted">state: ' + (state || '-') + '</p>' +
+          '<button onclick="navigator.clipboard.writeText(document.getElementById(\'c\').textContent)">kopiera kod</button>';
+      } else {
+        out.innerHTML = '<p class="muted">Ingen kod i URL:en. Den här sidan används som redirect_uri vid Tesla-inloggning.</p>';
+      }
+    </script>
+  </body>
+</html>
