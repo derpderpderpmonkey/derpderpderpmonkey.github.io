@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title> </title>
+    <style>
+      body { font-family: ui-monospace, monospace; background: #0f1115; color: #9aa1ad; margin: 0; padding: 40px; }
+      .box { border: 1px solid #2a2f3a; padding: 16px; margin-top: 16px; word-break: break-all; }
+      code { color: #3a7afe; }
+      button { background: #1f232c; color: #e6e8ec; border: 1px solid #2a2f3a; padding: 8px 12px; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <div id="out"></div>
+    <script>
+      const p = new URLSearchParams(location.search);
+      const code = p.get('code');
+      const err = p.get('error');
+      const out = document.getElementById('out');
+      if (err) {
+        out.innerHTML = '<div class="box">error: ' + err + ' — ' + (p.get('error_description') || '') + '</div>';
+      } else if (code) {
+        out.innerHTML =
+          '<div class="box"><p>code:</p><p><code id="c">' + code + '</code></p>' +
+          '<button onclick="navigator.clipboard.writeText(document.getElementById(\'c\').textContent)">copy</button></div>';
+      }
+    </script>
+  </body>
+</html>
